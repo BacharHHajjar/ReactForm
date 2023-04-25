@@ -80,6 +80,10 @@ input:invalid[focused="true"] {
   border-color: red;
 }
 
-#success {
-  display: none;
+.failMessage {
+  color: red;
+}
+
+.successMessage {
+  color: green;
 }

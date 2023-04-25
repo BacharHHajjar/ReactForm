@@ -15,6 +15,7 @@ function App() {
 
   const [showLoader, setShowLoader] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showFailedMessage, setShowFailedMessage] = useState(false);
 
   const inputs = [
     {
@@ -62,13 +63,20 @@ function App() {
     e.preventDefault();
     setShowLoader(true);
     setShowSuccessMessage(false);
+    setShowFailedMessage(false);
 
-    axios.post("http://localhost:5000/api", values).then((response) => {
-      if (response.data === "OK") {
-        setTimeout(() => setShowLoader(false), 1000);
-        setTimeout(() => setShowSuccessMessage(true), 1000);
-      }
-    });
+    axios
+      .post("http://localhost:5000/api", values)
+      .then((response) => {
+        if (response.data === "OK") {
+          setTimeout(() => setShowLoader(false), 1000);
+          setTimeout(() => setShowSuccessMessage(true), 1000);
+        }
+      })
+      .catch(() => {
+        setShowLoader(false);
+        setShowFailedMessage(true);
+      });
   };
 
   const onChange = (e) => {
@@ -101,8 +109,17 @@ function App() {
             onClick={handleSubmit}
             disabled={showLoader}
           />
-          <h1 style={{ display: ` ${showSuccessMessage ? "block" : "none"}` }}>
-            Payment Successful
+          <h1
+            className="successMessage"
+            style={{ display: ` ${showSuccessMessage ? "block" : "none"}` }}
+          >
+            Payment Successful !
+          </h1>
+          <h1
+            className="failMessage"
+            style={{ display: ` ${showFailedMessage ? "block" : "none"}` }}
+          >
+            Payment Failed :/
           </h1>
         </form>
       </div>
