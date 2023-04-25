@@ -2,6 +2,8 @@ import "./styles/App.css";
 import Input from "./components/Input";
 import { useState } from "react";
 import axios from "axios";
+import { AlertBanner } from "@thumbtack/thumbprint-react";
+
 function App() {
   const [values, setValues] = useState({
     ccnumber: "",
@@ -74,24 +76,31 @@ function App() {
   };
 
   return (
-    <div className="app">
-      <form onSubmit={handleSubmit}>
-        <h1>Checkoutttt</h1>
-        {inputs.map((input) => (
-          <Input
-            key={input.id}
-            {...input}
-            value={values[input.name]}
-            onChange={onChange}
-          />
-        ))}
+    <>
+      <AlertBanner theme="caution">
+        This is a site for demonstration purposes<br></br> DO NOT ENTER REAL
+        CREDIT CARD DATA!
+      </AlertBanner>
+      <div className="app">
+        <form onSubmit={handleSubmit}>
+          <h1>Checkout</h1>
 
-        <button type="submit" onClick={handleClick}>
-          Pay
-        </button>
-        <h1 id="success">Payment Successful !</h1>
-      </form>
-    </div>
+          {inputs.map((input) => (
+            <Input
+              key={input.id}
+              {...input}
+              value={values[input.name]}
+              onChange={onChange}
+            />
+          ))}
+
+          <button type="submit" onClick={handleClick}>
+            Pay
+          </button>
+          <h1 id="success">Payment Successful !</h1>
+        </form>
+      </div>
+    </>
   );
 }
 
