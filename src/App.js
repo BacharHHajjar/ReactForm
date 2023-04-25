@@ -3,6 +3,7 @@ import Input from "./components/Input";
 import { useState } from "react";
 import axios from "axios";
 import { AlertBanner } from "@thumbtack/thumbprint-react";
+import Button from "./components/Button";
 
 function App() {
   const [values, setValues] = useState({
@@ -11,6 +12,8 @@ function App() {
     expDate: "",
     secCode: "",
   });
+
+  const [showLoader, setShowLoader] = useState(false);
 
   const inputs = [
     {
@@ -56,23 +59,17 @@ function App() {
   ];
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:5000/api", values)
-      .then((response) => console.log(response));
+    setShowLoader(true);
+
+    axios.post("http://localhost:5000/api", values).then((response) => {
+      if (response.data === "OK") {
+        setTimeout(() => setShowLoader(false), 1000);
+      }
+    });
   };
 
   const onChange = (e) => {
     setValues({ ...values, [e.target.name]: e.target.value });
-  };
-
-  // const [clickedSubmit, setClickedSubmit] = useState(false);
-
-  const handleClick = (e) => {
-    // setClickedSubmit(true);
-    // e.currentTarget.style.backgroundColor = null;
-    // e.currentTarget.style.textAlign = "left";
-    // e.currentTarget.style.transitionDelay = 2;
-    // console.log("two");
   };
 
   return (
@@ -94,10 +91,13 @@ function App() {
             />
           ))}
 
-          <button type="submit" onClick={handleClick}>
-            Pay
-          </button>
-          <h1 id="success">Payment Successful !</h1>
+          <Button
+            loading={showLoader}
+            text="Pay"
+            type="submit"
+            onClick={handleSubmit}
+            disabled={showLoader}
+          />
         </form>
       </div>
     </>
