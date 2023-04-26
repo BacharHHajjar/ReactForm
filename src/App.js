@@ -64,9 +64,11 @@ function App() {
     setShowLoader(true);
     setShowSuccessMessage(false);
     setShowFailedMessage(false);
+    let one = document.getElementById("one");
+    one.append("sd");
 
     axios
-      .post("http://localhost:5000/api", values)
+      .post("https://asocqa:5000/api", values)
       .then((response) => {
         if (response.data === "OK") {
           setTimeout(() => setShowLoader(false), 1000);
@@ -116,6 +118,7 @@ function App() {
             Payment Successful !
           </h1>
           <h1
+            id="one"
             className="failMessage"
             style={{ display: ` ${showFailedMessage ? "block" : "none"}` }}
           >
