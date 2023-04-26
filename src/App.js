@@ -25,7 +25,7 @@ function App() {
       placeholder: "1234 5678 9101 1213",
       errormessage: "Should be a valid credit card number (16 numbers)",
       label: "Card Number",
-      // pattern: "^[0-9]{16}$",
+      pattern: "^[0-9]{16}$",
       required: false,
     },
     {
@@ -34,7 +34,7 @@ function App() {
       type: "text",
       placeholder: "Ex. John Smith",
       errormessage: "Name should be only letters between 2 and 20",
-      // pattern: "^[A-Za-z ]{2,20}$",
+      pattern: "^[A-Za-z ]{2,20}$",
       label: "Name on card",
       required: false,
     },
@@ -43,7 +43,7 @@ function App() {
       name: "expDate",
       type: "text",
       placeholder: "01/25",
-      // pattern: "^(0[1-9]|1[0-2])/?([0-9]{2})$",
+      pattern: "^(0[1-9]|1[0-2])/?([0-9]{2})$",
       errormessage: "Invalid date or date older than today's",
       label: "Expiry date",
       required: false,
@@ -55,7 +55,7 @@ function App() {
       placeholder: "CVV",
       errormessage: "Security code should be three numbers",
       label: "Security Code",
-      // pattern: "^[0-9]{3}$",
+      pattern: "^[0-9]{3}$",
       required: false,
     },
   ];
@@ -64,15 +64,14 @@ function App() {
     setShowLoader(true);
     setShowSuccessMessage(false);
     setShowFailedMessage(false);
-    let one = document.getElementById("one");
-    one.append("sd");
 
     axios
-      .post("https://asocqa:5000/api", values)
+      .post("https://asocqa.com/api", values)
       .then((response) => {
         if (response.data === "OK") {
           setTimeout(() => setShowLoader(false), 1000);
           setTimeout(() => setShowSuccessMessage(true), 1000);
+          console.log("Received data from server: " + response.data);
         }
       })
       .catch(() => {
@@ -118,7 +117,6 @@ function App() {
             Payment Successful !
           </h1>
           <h1
-            id="one"
             className="failMessage"
             style={{ display: ` ${showFailedMessage ? "block" : "none"}` }}
           >
