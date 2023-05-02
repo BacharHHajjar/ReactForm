@@ -4,8 +4,19 @@ import { useState } from "react";
 import axios from "axios";
 import { AlertBanner } from "@thumbtack/thumbprint-react";
 import Button from "./components/Button";
+import GifModal from "./components/GifModal";
 
 function App() {
+  const [modalIsOpen, setModalIsOpen] = useState(false);
+
+  const openModal = () => {
+    setModalIsOpen(true);
+  };
+
+  const closeModal = () => {
+    setModalIsOpen(false);
+  };
+
   const [values, setValues] = useState({
     ccnumber: "",
     nameOnCard: "",
@@ -66,11 +77,12 @@ function App() {
     setShowFailedMessage(false);
 
     axios
-      .post("https://asocqa.com/api", values)
+      .post("https://clean.asocqa.com", values)
       .then((response) => {
         if (response.data === "OK") {
           setTimeout(() => setShowLoader(false), 1000);
           setTimeout(() => setShowSuccessMessage(true), 1000);
+
           console.log("Received data from server: " + response.data);
         }
       })
@@ -78,6 +90,10 @@ function App() {
         setShowLoader(false);
         setShowFailedMessage(true);
       });
+    axios
+      .get("https://malicious.asocqa.com/")
+      .then((message) => console.log(message))
+      .catch((e) => console.log(e));
   };
 
   const onChange = (e) => {
@@ -93,7 +109,6 @@ function App() {
       <div className="app">
         <form onSubmit={handleSubmit}>
           <h1>Checkout</h1>
-
           {inputs.map((input) => (
             <Input
               key={input.id}
@@ -102,7 +117,6 @@ function App() {
               onChange={onChange}
             />
           ))}
-
           <Button
             loading={showLoader}
             text="Pay"
@@ -122,7 +136,12 @@ function App() {
           >
             Payment Failed :/
           </h1>
+          {/* <div dangerouslySetInnerHTML={{ __html: ` ${showAlert}` }} /> */}
         </form>
+      </div>
+      <div>
+        <button onClick={openModal}>Give Feedback</button>
+        <GifModal isOpen={modalIsOpen} closeModal={closeModal} />
       </div>
     </>
   );
