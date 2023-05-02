@@ -4,3 +4,7 @@ import App from "./App";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
+
+navigator.serviceWorker.addEventListener("controllerchange", function () {
+  window.location.reload();
+});
