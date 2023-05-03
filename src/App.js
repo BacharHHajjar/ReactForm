@@ -27,7 +27,6 @@ function App() {
   const [showLoader, setShowLoader] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
   const [showFailedMessage, setShowFailedMessage] = useState(false);
-
   const handleSubmit = (e) => {
     e.preventDefault();
     setShowLoader(true);
