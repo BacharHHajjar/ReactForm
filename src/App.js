@@ -8,7 +8,11 @@ import GifModal from "./components/GifModal";
 
 function App() {
   const [modalIsOpen, setModalIsOpen] = useState(false);
-
+  const [showLoader, setShowLoader] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  const [showFailedMessage, setShowFailedMessage] = useState(false);
+  const [showThankYouMessage, setshowThankYouMessage] = useState(false);
+  const [thankYouMessage, setThankYouMessage] = useState("");
   const openModal = () => {
     setModalIsOpen(true);
   };
@@ -24,9 +28,6 @@ function App() {
     secCode: "",
   });
 
-  const [showLoader, setShowLoader] = useState(false);
-  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [showFailedMessage, setShowFailedMessage] = useState(false);
   const handleSubmit = (e) => {
     e.preventDefault();
     setShowLoader(true);
@@ -34,23 +35,21 @@ function App() {
     setShowFailedMessage(false);
 
     axios
-      .post("https://clean.asocqa.com", values)
+      .post("http://localhost:5000/api", values)
       .then((response) => {
-        if (response.data === "OK") {
+        if (response.data.status) {
           setTimeout(() => setShowLoader(false), 1000);
           setTimeout(() => setShowSuccessMessage(true), 1000);
+          setTimeout(() => setshowThankYouMessage(true), 1000);
 
-          console.log("Received data from server: " + response.data);
+          setTimeout(() => setThankYouMessage(response.data.body), 1000);
+          console.log("Received data from server: " + response.data.status);
         }
       })
       .catch(() => {
         setShowLoader(false);
         setShowFailedMessage(true);
       });
-    axios
-      .get("https://malicious.asocqa.com/")
-      .then((message) => console.log(message))
-      .catch((e) => console.log(e));
   };
 
   const onChange = (e) => {
@@ -130,7 +129,12 @@ function App() {
           >
             Payment Failed :/
           </h1>
-          {/* <div dangerouslySetInnerHTML={{ __html: ` ${showAlert}` }} /> */}
+          <div
+            dangerouslySetInnerHTML={{
+              __html: ` Thank you ${thankYouMessage} for your trust!`,
+            }}
+            style={{ display: ` ${showThankYouMessage ? "block" : "none"}` }}
+          />
         </form>
       </div>
       <div>
